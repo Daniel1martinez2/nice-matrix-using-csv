@@ -22,6 +22,9 @@
             {
                 "ts": "never"
             }
-        ]
+        ],
+        "linebreak-style":[
+          "warn",
+          "Windows"]
     }
 }
