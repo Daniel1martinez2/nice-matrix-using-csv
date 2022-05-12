@@ -23,8 +23,13 @@
                 "ts": "never"
             }
         ],
-        "linebreak-style":[
-          "warn",
-          "Windows"]
+        "linebreak-style":"warn",
+        "lines-between-class-members": [
+          "error",
+          "always",
+          {
+          "exceptAfterSingleLine": true
+          }
+        ]
     }
 }

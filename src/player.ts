@@ -4,17 +4,11 @@ export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 
 export default class Player {
   private x: number = 0;
-
   private y: number = 0;
-
   private level: number = 0;
-
   private r:number = 0;
-
   private g:number = 0;
-
   private b:number = 0;
-
   private size: number = 20;
 
   constructor() {
