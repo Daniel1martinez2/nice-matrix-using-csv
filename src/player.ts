@@ -1,5 +1,7 @@
 import p5 from 'p5';
 
+export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
+
 export default class Player {
   private x: number = 0;
 
@@ -37,7 +39,7 @@ export default class Player {
     p.text(`${this.level}`, this.x, this.y);
   }
 
-  move(directionMove:string) {
+  move(directionMove:Direction) {
     switch (directionMove) {
       case 'UP':
         this.y -= 3;

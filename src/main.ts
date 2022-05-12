@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import './style.css';
 import p5 from 'p5';
 import Enemy from './enemy';
@@ -7,7 +8,6 @@ const enemys:Enemy[] = [];
 const player:Player = new Player();
 
 const sketch = (p:p5) => {
-  // eslint-disable-next-line no-param-reassign
   p.setup = () => {
     p.createCanvas(500, 500);
     for (let index = 0; index < 20; index += 1) {
@@ -22,7 +22,6 @@ const sketch = (p:p5) => {
     return isClose && isBigger;
   }
 
-  // eslint-disable-next-line no-param-reassign
   p.draw = () => {
     p.background(80);
     p.fill(255, 255, 0);
@@ -36,7 +35,6 @@ const sketch = (p:p5) => {
     player.show(p);
   };
 
-  // eslint-disable-next-line no-param-reassign
   p.keyPressed = () => {
     switch (p.key.toLocaleLowerCase()) {
       case 'w':
