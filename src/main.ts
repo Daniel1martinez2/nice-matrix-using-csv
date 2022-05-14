@@ -1,57 +1,49 @@
 /* eslint-disable no-param-reassign */
 import './style.css';
 import p5 from 'p5';
-import Enemy from './enemy';
-import Player from './player';
+import MapElem from './mapElem';
+// import Enemy from './enemy';
+import Wall from './wall';
+import Ground from './ground';
 
-const enemys:Enemy[] = [];
-const player:Player = new Player();
-
+const game: MapElem[][] = [];
 const sketch = (p:p5) => {
   p.setup = () => {
     p.createCanvas(500, 500);
-    for (let index = 0; index < 20; index += 1) {
-      enemys.push(new Enemy(Math.random() * 500, Math.random() * 500));
-    }
+    fetch('../data/map.csv', {
+      headers: { 'content-type': 'text/csv;charset=UTF-8' },
+    })
+      .then((raw:any) => raw.text())
+      .then((data:string) => {
+        // Transform the string into a matrix
+        const numberMatrix = data.split(/\r?\n/).map((chunk:string) => chunk.split(','));
+        // Now, Transform the matrix string into a object based matrix
+        for (let i = 0; i < numberMatrix.length; i += 1) {
+          const currentRow: MapElem[] = [];
+          for (let j = 0; j < numberMatrix[i].length; j += 1) {
+            const current = numberMatrix[i][j];
+            switch (current) {
+              case '1':
+                currentRow.push(new Wall(j * 22, i * 22));
+                break;
+              default:
+                currentRow.push(new Ground(j * 22, i * 22));
+                break;
+            }
+          }
+          game.push(currentRow);
+        }
+        console.log(game);
+      });
   };
-
-  function validateContact(each:Enemy):boolean {
-    const minDistance = (each.getSize() + player.getSize()) / 2;
-    const isClose = p.dist(each.getX(), each.getY(), player.getX(), player.getY()) < minDistance;
-    const isBigger = player.getLevel() > each.getLevel();
-    return isClose && isBigger;
-  }
 
   p.draw = () => {
     p.background(80);
-    p.fill(255, 255, 0);
-    p.ellipse(200, 200, 50, 50);
-    enemys.forEach((eachEnemy, index) => {
-      eachEnemy.show(p);
-      if (validateContact(eachEnemy)) {
-        enemys.splice(index, 1);
-      }
+    game.forEach((chunk: MapElem[]) => {
+      chunk.forEach((n:MapElem) => {
+        n.show(p);
+      });
     });
-    player.show(p);
-  };
-
-  p.keyPressed = () => {
-    switch (p.key.toLocaleLowerCase()) {
-      case 'w':
-        player.move('UP');
-        break;
-      case 's':
-        player.move('DOWN');
-        break;
-      case 'a':
-        player.move('LEFT');
-        break;
-      case 'd':
-        player.move('RIGHT');
-        break;
-      default:
-        break;
-    }
   };
 };
 // eslint-disable-next-line new-cap

@@ -1,4 +1,4 @@
-# Vite, Vitest, P5, TypeScript and ESLint Starter
+# MATRIX (but nicer 😎)
 
 ### First thing first
 ```
@@ -20,3 +20,7 @@ npx vite
 ```
 npm run test
 ```
+# How it works
+### Is the same matrix you have to build, but created in a sugar nicer way ✨✨✨
+#### I'm using all the knowledge you gathered along the course (nothing strange or weird, I promise)
+![](./img/map.png)
