@@ -1,70 +1,60 @@
-import p5 from 'p5';
+/* eslint-disable class-methods-use-this */
+import MapElem from './mapElem';
+import Wall from './wall';
 
 export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
+/* eslint-disable no-useless-constructor */
 
-export default class Player {
-  private x: number = 0;
-  private y: number = 0;
-  private level: number = 0;
-  private r:number = 0;
-  private g:number = 0;
-  private b:number = 0;
-  private size: number = 20;
+export default class Player extends MapElem {
+  protected r: number;
 
-  constructor() {
-    this.x = 250;
-    this.y = 250;
+  protected g: number;
+
+  protected b: number;
+
+  constructor(x:number, y:number) {
+    super(x, y);
     this.r = 0;
     this.g = 0;
-    this.b = 0;
-    this.level = 2;
-    this.size = 20 + (this.level * 2);
+    this.b = 255;
   }
 
-  show(p:p5) {
-    p.stroke(255);
-    p.strokeWeight(3);
-    p.fill(this.r, this.g, this.b);
-    p.circle(this.x, this.y, this.size);
-    p.stroke(0);
-    p.strokeWeight(1);
-    p.fill(255);
-    p.textAlign(p.CENTER, p.CENTER);
-    p.text(`${this.level}`, this.x, this.y);
+  // eslint-disable-next-line class-methods-use-this
+  setColor() {
+    return { r: this.r, g: this.g, b: this.b };
   }
 
-  move(directionMove:Direction) {
+  public move(directionMove:Direction, row: number, col: number, matrix: MapElem[][]) {
+    const copyCat = [...matrix];
+    const player = copyCat[row][col];
     switch (directionMove) {
       case 'UP':
-        this.y -= 3;
+        if (!(copyCat[row - 1][col] instanceof Wall)) {
+          copyCat[row][col] = copyCat[row - 1][col];
+          copyCat[row - 1][col] = player;
+        }
         break;
       case 'DOWN':
-        this.y += 3;
+        if (!(copyCat[row + 1][col] instanceof Wall)) {
+          copyCat[row][col] = copyCat[row + 1][col];
+          copyCat[row + 1][col] = player;
+        }
         break;
       case 'LEFT':
-        this.x -= 3;
+        if (!(copyCat[row][col - 1] instanceof Wall)) {
+          copyCat[row][col] = copyCat[row][col - 1];
+          copyCat[row][col - 1] = player;
+        }
         break;
       case 'RIGHT':
-        this.x += 3;
+        if (!(copyCat[row][col + 1] instanceof Wall)) {
+          copyCat[row][col] = copyCat[row][col + 1];
+          copyCat[row][col + 1] = player;
+        }
         break;
       default:
         break;
     }
-  }
-
-  getX():number {
-    return this.x;
-  }
-
-  getY():number {
-    return this.y;
-  }
-
-  getSize():number {
-    return this.size;
-  }
-
-  getLevel():number {
-    return this.level;
+    return copyCat;
   }
 }

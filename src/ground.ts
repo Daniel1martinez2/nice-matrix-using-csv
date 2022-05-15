@@ -2,12 +2,21 @@
 import MapElem from './mapElem';
 
 export default class Ground extends MapElem {
+  protected r: number;
+
+  protected g: number;
+
+  protected b: number;
+
   constructor(x:number, y:number) {
     super(x, y);
+    this.r = 200;
+    this.g = 240;
+    this.b = 255;
   }
 
   // eslint-disable-next-line class-methods-use-this
   setColor() {
-    return { r: 0, g: 255, b: 0 };
+    return { r: this.r, g: this.g, b: this.b };
   }
 }

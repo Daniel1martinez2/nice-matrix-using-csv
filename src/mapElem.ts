@@ -1,11 +1,11 @@
 import p5 from 'p5';
 
 export default abstract class MapElem {
-  private x: number = 0;
+  protected x: number = 0;
 
-  private y: number = 0;
+  protected y: number = 0;
 
-  private size: number = 20;
+  protected size: number = 20;
 
   constructor(x:number, y:number) {
     this.x = x;
@@ -35,5 +35,13 @@ export default abstract class MapElem {
 
   getSize():number {
     return this.size;
+  }
+
+  setX(newX:number):void {
+    this.x = newX;
+  }
+
+  setY(newY:number):void {
+    this.y = newY;
   }
 }

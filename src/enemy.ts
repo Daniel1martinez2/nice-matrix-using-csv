@@ -1,9 +1,9 @@
+/* eslint-disable no-useless-constructor */
 import MapElem from './mapElem';
 
 export default class Enemy extends MapElem {
   constructor(x:number, y:number) {
     super(x, y);
-    console.log('created');
   }
 
   // eslint-disable-next-line class-methods-use-this
