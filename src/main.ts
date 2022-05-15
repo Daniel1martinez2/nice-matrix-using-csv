@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 import './style.css';
 import p5 from 'p5';
@@ -6,9 +7,16 @@ import MapElem from './mapElem';
 import Wall from './wall';
 import Ground from './ground';
 import Player from './player';
+import Bullet from './bullet';
 
 let game: MapElem[][];
 const sketch = (p:p5) => {
+  const getPlayerReference = (_game: MapElem[][]) => {
+    const playerRow = _game.findIndex((l: MapElem[]) => l.find((j: MapElem) => j instanceof Player));
+    const playerIndex = _game[playerRow].findIndex((j: MapElem | Player) => j instanceof Player);
+    const player = _game[playerRow][playerIndex];
+    return { playerRow, playerIndex, player };
+  };
   p.setup = () => {
     p.createCanvas(500, 500);
     fetch('../data/map.csv', {
@@ -32,6 +40,7 @@ const sketch = (p:p5) => {
 
   p.draw = () => {
     p.background(80);
+    const { player } = getPlayerReference(game);
     for (let i = 0; i < game.length; i += 1) {
       for (let j = 0; j < game[i].length; j += 1) {
         game[i][j].setX(j * 20);
@@ -39,12 +48,20 @@ const sketch = (p:p5) => {
         game[i][j].show(p);
       }
     }
+    if (player instanceof Player) {
+      player.getBullets().forEach((bullet: Bullet, bulletIndex: number) => {
+        bullet.show(p);
+        const callBack = (row:number, col: number) => {
+          console.log(row, col);
+          game[row][col] = new Ground(0, 0);
+          player.spliceBullet(bulletIndex);
+        };
+        bullet.shoot(callBack, game);
+      });
+    }
   };
   p.keyPressed = () => {
-    const playerRow = game.findIndex((l: MapElem[]) => l.find((j: MapElem) => j instanceof Player));
-    const playerIndex = game[playerRow].findIndex((j: MapElem | Player) => j instanceof Player);
-    const player = game[playerRow][playerIndex];
-    console.log(player instanceof Player);
+    const { playerRow, playerIndex, player } = getPlayerReference(game);
     if (player instanceof Player) {
       switch (p.key.toLocaleLowerCase()) {
         case 'w':
@@ -58,6 +75,10 @@ const sketch = (p:p5) => {
           break;
         case 'd':
           game = player.move('RIGHT', playerRow, playerIndex, game);
+          break;
+        case 'r':
+          player.shoot();
+          console.log(player);
           break;
         default:
           break;

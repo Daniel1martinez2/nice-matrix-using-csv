@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import MapElem from './mapElem';
 import Wall from './wall';
+import Bullet from './bullet';
 
 export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 /* eslint-disable no-useless-constructor */
@@ -12,16 +13,23 @@ export default class Player extends MapElem {
 
   protected b: number;
 
+  protected bullets: Bullet[];
+
   constructor(x:number, y:number) {
     super(x, y);
     this.r = 0;
     this.g = 0;
     this.b = 255;
+    this.bullets = [];
   }
 
   // eslint-disable-next-line class-methods-use-this
   setColor() {
     return { r: this.r, g: this.g, b: this.b };
+  }
+
+  public shoot() {
+    this.bullets.push(new Bullet(this.x, this.y));
   }
 
   public move(directionMove:Direction, row: number, col: number, matrix: MapElem[][]) {
@@ -56,5 +64,13 @@ export default class Player extends MapElem {
         break;
     }
     return copyCat;
+  }
+
+  public getBullets(): Bullet[] {
+    return this.bullets;
+  }
+
+  public spliceBullet(bulletIndex: number) {
+    this.bullets.splice(bulletIndex, 1);
   }
 }
