@@ -30,27 +30,30 @@ npm run test
 //Fetch the data
 let game: MapElem[][]; //this variable will represent our matrix along the code
 p.setup = () => {
-	fetch('../data/map.csv', { //the path of our local file
-		headers: { 'content-type': 'text/csv;charset=UTF-8' },
-	})
-		.then((raw:any) => raw.text()) //transform the raw data into string
-		.then((data:string) => {
-			//here we have access to the data in string format
-			//as we have access to a bunch of chars and commas, we need to transform it to objects
-			game = data.split(/\r?\n/).map((chunk:string) => chunk.split(',').map((obj:string) => {
-				//According to the value we set the object type
-				//At this point, the posx and posy does not matter at all, I will set that later
-				switch (obj) {
-					case '1':
-						return new Wall(0, 0);
-					case '3':
-						return new Player(0, 0);
-					default:
-						return new Ground(0, 0);
-				}
-			}));
-		});
-}
+  fetch("../data/map.csv", {
+    //the path of our local file
+    headers: { "content-type": "text/csv;charset=UTF-8" },
+  })
+    .then((raw: any) => raw.text()) //transform the raw data into string
+    .then((data: string) => {
+      //here we have access to the data in string format
+      //as we have access to a bunch of chars and commas, we need to transform it to objects
+      game = data.split(/\r?\n/).map((chunk: string) =>
+        chunk.split(",").map((obj: string) => {
+          //According to the value we set the object type
+          //At this point, the posx and posy does not matter at all, I will set that later
+          switch (obj) {
+            case "1":
+              return new Wall(0, 0);
+            case "3":
+              return new Player(0, 0);
+            default:
+              return new Ground(0, 0);
+          }
+        })
+      );
+    });
+};
 ```
 #### Before we continue, there is an important notion to settle down
 #### We need to get track 
