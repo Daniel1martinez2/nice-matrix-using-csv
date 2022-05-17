@@ -10,9 +10,6 @@ export default abstract class MapElem {
   constructor(x:number, y:number) {
     this.x = x;
     this.y = y;
-    // this.r = r;
-    // this.g = g;
-    // this.b = b;
     this.size = 20;
   }
 

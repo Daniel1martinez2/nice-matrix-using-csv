@@ -51,8 +51,10 @@ const sketch = (p:p5) => {
     if (player instanceof Player) {
       player.getBullets().forEach((bullet: Bullet, bulletIndex: number) => {
         bullet.show(p);
+        if (bullet.getX() > 500) {
+          player.spliceBullet(bulletIndex);
+        }
         const callBack = (row:number, col: number) => {
-          console.log(row, col);
           game[row][col] = new Ground(0, 0);
           player.spliceBullet(bulletIndex);
         };
@@ -78,7 +80,6 @@ const sketch = (p:p5) => {
           break;
         case 'r':
           player.shoot();
-          console.log(player);
           break;
         default:
           break;

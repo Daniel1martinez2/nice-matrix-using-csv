@@ -27,7 +27,6 @@ export default class Bullet {
       chunk.forEach((obj: MapElem, j: number) => {
         if (obj instanceof Wall) {
           if (obj.getX() === this.x && obj.getY() === this.y) {
-            console.log('epa');
             callBack(i, j);
           }
         }

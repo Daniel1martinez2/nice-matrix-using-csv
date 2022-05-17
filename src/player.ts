@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import MapElem from './mapElem';
-import Wall from './wall';
+import Ground from './ground';
 import Bullet from './bullet';
 
 export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
@@ -37,25 +37,25 @@ export default class Player extends MapElem {
     const player = copyCat[row][col];
     switch (directionMove) {
       case 'UP':
-        if (!(copyCat[row - 1][col] instanceof Wall)) {
+        if (copyCat[row - 1][col] instanceof Ground) {
           copyCat[row][col] = copyCat[row - 1][col];
           copyCat[row - 1][col] = player;
         }
         break;
       case 'DOWN':
-        if (!(copyCat[row + 1][col] instanceof Wall)) {
+        if (copyCat[row + 1][col] instanceof Ground) {
           copyCat[row][col] = copyCat[row + 1][col];
           copyCat[row + 1][col] = player;
         }
         break;
       case 'LEFT':
-        if (!(copyCat[row][col - 1] instanceof Wall)) {
+        if (copyCat[row][col - 1] instanceof Ground) {
           copyCat[row][col] = copyCat[row][col - 1];
           copyCat[row][col - 1] = player;
         }
         break;
       case 'RIGHT':
-        if (!(copyCat[row][col + 1] instanceof Wall)) {
+        if (copyCat[row][col + 1] instanceof Ground) {
           copyCat[row][col] = copyCat[row][col + 1];
           copyCat[row][col + 1] = player;
         }
