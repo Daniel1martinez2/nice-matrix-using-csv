@@ -3,55 +3,32 @@
 import './style.css';
 import p5 from 'p5';
 import MapElem from './mapElem';
-// import Enemy from './enemy';
-import Wall from './wall';
 import Ground from './ground';
 import Player from './player';
 import Bullet from './bullet';
+import getMatrixData from './getMatrixData';
+import turnMtrxIntoObj from './turnMtrxIntoObj';
+import getPlayerReference from './getPlayerReference';
+import updateVisualMtrx from './updateVisualMtrx';
 
 let game: MapElem[][];
 const sketch = (p:p5) => {
-  const getPlayerReference = (_game: MapElem[][]) => {
-    const playerRow = _game.findIndex((l: MapElem[]) => l.find((j: MapElem) => j instanceof Player));
-    const playerIndex = _game[playerRow].findIndex((j: MapElem | Player) => j instanceof Player);
-    const player = _game[playerRow][playerIndex];
-    return { playerRow, playerIndex, player };
-  };
   p.setup = () => {
     p.createCanvas(500, 500);
-    fetch('../data/map.csv', {
-      headers: { 'content-type': 'text/csv;charset=UTF-8' },
-    })
-      .then((raw:any) => raw.text())
-      .then((data:string) => {
-        // Transform the string into a matrix
-        game = data.split(/\r?\n/).map((chunk:string) => chunk.split(',').map((obj:string) => {
-          switch (obj) {
-            case '1':
-              return new Wall(0, 0);
-            case '3':
-              return new Player(0, 0);
-            default:
-              return new Ground(0, 0);
-          }
-        }));
+    getMatrixData()
+      .then((data: string) => {
+        game = turnMtrxIntoObj(data);
       });
   };
 
   p.draw = () => {
     p.background(80);
     const { player } = getPlayerReference(game);
-    for (let i = 0; i < game.length; i += 1) {
-      for (let j = 0; j < game[i].length; j += 1) {
-        game[i][j].setX(j * 20);
-        game[i][j].setY(i * 20);
-        game[i][j].show(p);
-      }
-    }
+    updateVisualMtrx(game, p);
     if (player instanceof Player) {
       player.getBullets().forEach((bullet: Bullet, bulletIndex: number) => {
         bullet.show(p);
-        if (bullet.getX() > 500) {
+        if (bullet.getX() > game[0].length * MapElem.size) {
           player.spliceBullet(bulletIndex);
         }
         const callBack = (row:number, col: number) => {

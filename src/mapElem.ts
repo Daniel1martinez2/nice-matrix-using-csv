@@ -5,17 +5,17 @@ export default abstract class MapElem {
 
   protected y: number = 0;
 
-  protected size: number = 20;
+  static size: number = 20;
 
   constructor(x:number, y:number) {
     this.x = x;
     this.y = y;
-    this.size = 20;
+    MapElem.size = 20;
   }
 
   show(p:p5) {
     p.fill(this.setColor().r, this.setColor().g, this.setColor().b);
-    p.rect(this.x, this.y, this.size);
+    p.rect(this.x, this.y, MapElem.size);
     p.fill(255);
     p.textAlign(p.CENTER, p.CENTER);
   }
@@ -28,10 +28,6 @@ export default abstract class MapElem {
 
   getY():number {
     return this.y;
-  }
-
-  getSize():number {
-    return this.size;
   }
 
   setX(newX:number):void {
